@@ -22,7 +22,7 @@ var App = /** @class */ (function () {
          * working so far. This function will change when we start to add more
          * API endpoints */
         var router = express.Router();
-        router.get('/', UserRouter);
+        router.get('/users', UserRouter);
         this.express.use(UserRouter);
     };
     return App;
