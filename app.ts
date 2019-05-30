@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 
+const cors = require('cors');
 const UserRouter = require('./routes/users');
 
 // Creates and configures an ExpressJS web server.
@@ -18,6 +19,7 @@ class App {
 
   // Configure Express middleware.
   private middleware(): void {
+    this.express.use(cors());
     this.express.use(bodyParser.json());
     this.express.use(bodyParser.urlencoded({ extended: false }));
   }
@@ -29,7 +31,7 @@ class App {
      * API endpoints */
     let router = express.Router();
 
-    router.get('/users', UserRouter);
+    router.get('/', UserRouter);
     this.express.use(UserRouter);
   }
 

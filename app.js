@@ -2,6 +2,7 @@
 exports.__esModule = true;
 var express = require("express");
 var bodyParser = require("body-parser");
+var cors = require('cors');
 var UserRouter = require('./routes/users');
 // Creates and configures an ExpressJS web server.
 var App = /** @class */ (function () {
@@ -13,6 +14,7 @@ var App = /** @class */ (function () {
     }
     // Configure Express middleware.
     App.prototype.middleware = function () {
+        this.express.use(cors());
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({ extended: false }));
     };
@@ -22,7 +24,7 @@ var App = /** @class */ (function () {
          * working so far. This function will change when we start to add more
          * API endpoints */
         var router = express.Router();
-        router.get('/users', UserRouter);
+        router.get('/', UserRouter);
         this.express.use(UserRouter);
     };
     return App;
