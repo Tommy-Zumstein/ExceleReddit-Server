@@ -2,6 +2,8 @@
 exports.__esModule = true;
 var express = require("express");
 var bodyParser = require("body-parser");
+var firebaseSDK = require('firebase');
+var firebase = require('./firebase');
 var cors = require('cors');
 var UserRouter = require('./routes/users');
 // Creates and configures an ExpressJS web server.
@@ -11,6 +13,7 @@ var App = /** @class */ (function () {
         this.express = express();
         this.middleware();
         this.routes();
+        this.initializeFirebase();
     }
     // Configure Express middleware.
     App.prototype.middleware = function () {
@@ -26,6 +29,9 @@ var App = /** @class */ (function () {
         var router = express.Router();
         router.get('/', UserRouter);
         this.express.use(UserRouter);
+    };
+    App.prototype.initializeFirebase = function () {
+        firebaseSDK.initializeApp(firebase.firebaseConfig);
     };
     return App;
 }());

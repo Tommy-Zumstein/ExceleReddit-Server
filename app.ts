@@ -1,6 +1,8 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 
+const firebaseSDK = require('firebase');
+const firebase = require('./firebase');
 const cors = require('cors');
 const UserRouter = require('./routes/users');
 
@@ -15,6 +17,7 @@ class App {
     this.express = express();
     this.middleware();
     this.routes();
+    this.initializeFirebase();
   }
 
   // Configure Express middleware.
@@ -35,6 +38,9 @@ class App {
     this.express.use(UserRouter);
   }
 
+  initializeFirebase() {
+    firebaseSDK.initializeApp(firebase.firebaseConfig);
+  }
 }
 
 let server: any = new App().express;
