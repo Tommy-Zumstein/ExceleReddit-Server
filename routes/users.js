@@ -31,13 +31,16 @@ const setFriends = connection.model('SetFriends', setFriendsSchema);
 /* Login to firebase. */
 router.get('/login', (req, res, next) => {
   const { email, password } = req.query;
+  console.log(email);
+  console.log(password);
   // login, upon confirm check for data in database.
   firebaseSDK.auth().signInWithEmailAndPassword(email, password)
-    .then(res => {
-      console.log(res.user.uid);
-      res.status(200).json(res.user.uid);
+    .then(result => {
+      res.status(200).json(result.user.uid);
     })
-    .catch(err => res.status(400).json(err));
+    .catch(err => {
+      res.status(400).json(err);
+    });
 });
 
 /* GET users. */
@@ -81,14 +84,16 @@ router.post('/createUser', (req, res, next) => {
 
   firebaseSDK.auth().createUserWithEmailAndPassword(user.email, password)
     .then(result => {
-      userId = result.uid;
+      const { uid, refreshToken } = result.user;
+      const userId = uid;
+
       const mongooseUser = new User({
         userId, user, friends, blocked, hidden, mine, multi
       });
 
       mongooseUser.save(err => {
         if (err) return res.status(400).json(err);
-        res.status(200).json(userId);
+        res.status(200).json({ userId, refreshToken });
       });
     })
     .catch(err => res.status(400).json(err));
