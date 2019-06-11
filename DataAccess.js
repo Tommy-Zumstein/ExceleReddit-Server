@@ -16,7 +16,8 @@ var DataAccess = /** @class */ (function () {
         this.mongooseInstance = Mongoose.connect(this.DB_CONNECTION_STRING);
         return this.mongooseInstance;
     };
-    DataAccess.DB_CONNECTION_STRING = 'mongodb://dbAdmin:test@localhost:3000/excelereddit?authSource=admin';
+    // DataAccess.DB_CONNECTION_STRING = 'mongodb://dbAdmin:test@localhost:3000/excelereddit?authSource=admin';
+    DataAccess.DB_CONNECTION_STRING = 'mongodb+srv://admin:excelereddit@excelereddit-xy6mm.azure.mongodb.net/test?retryWrites=true&w=majority';
     return DataAccess;
 }());
 exports.DataAccess = DataAccess;

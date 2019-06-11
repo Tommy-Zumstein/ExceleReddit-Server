@@ -31,12 +31,14 @@ const setFriends = connection.model('SetFriends', setFriendsSchema);
 /* Login to firebase. */
 router.get('/login', (req, res, next) => {
   const { email, password } = req.query;
-  console.log(email);
-  console.log(password);
-  // login, upon confirm check for data in database.
   firebaseSDK.auth().signInWithEmailAndPassword(email, password)
     .then(result => {
-      res.status(200).json(result.user.uid);
+      const { uid, refreshToken } = result.user;
+      User.find({ userId: uid }).exec((err, dbResult) => {
+        if (err) res.status(400).json(err);
+        const user = dbResult[0];
+        res.status(200).json({ user, refreshToken });
+      });
     })
     .catch(err => {
       res.status(400).json(err);
@@ -93,6 +95,7 @@ router.post('/createUser', (req, res, next) => {
 
       mongooseUser.save(err => {
         if (err) return res.status(400).json(err);
+
         res.status(200).json({ userId, refreshToken });
       });
     })
