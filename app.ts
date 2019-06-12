@@ -33,7 +33,6 @@ class App {
      * working so far. This function will change when we start to add more
      * API endpoints */
     let router = express.Router();
-
     router.get('/', UserRouter);
     this.express.use(UserRouter);
     this.express.use('/', express.static(__dirname + '/angularSrc'));
