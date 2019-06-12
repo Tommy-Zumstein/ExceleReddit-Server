@@ -36,6 +36,7 @@ class App {
 
     router.get('/', UserRouter);
     this.express.use(UserRouter);
+    this.express.use('/', express.static(__dirname + '/angularSrc'));
   }
 
   initializeFirebase() {

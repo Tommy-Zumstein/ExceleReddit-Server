@@ -31,6 +31,7 @@ const setFriends = connection.model('SetFriends', setFriendsSchema);
 /* Login to firebase. */
 router.get('/login', (req, res, next) => {
   const { email, password } = req.query;
+
   firebaseSDK.auth().signInWithEmailAndPassword(email, password)
     .then(result => {
       const { uid, refreshToken } = result.user;
@@ -43,6 +44,26 @@ router.get('/login', (req, res, next) => {
     .catch(err => {
       res.status(400).json(err);
     });
+});
+
+/* verify users token to login */
+router.get('/verifyToken', (req, res, next) => {
+  const { token } = req.query;
+
+  // TODO: finish this 
+  // firebaseSDK.auth().signInWithCustomToken(token)
+  //   .then(result => {
+  //     const { uid, refreshToken } = result.user;
+  //     User.find({ userId: uid }).exec((err, dbResult) => {
+  //       if (err) res.status(400).json(err);
+  //       const user = dbResult[0];
+  //       res.status(200).json({ user, refreshToken });
+  //     });
+  //   })
+  //   .catch(err => {
+  //     res.status(400).json(err);
+  //   });
+  res.status(400).json({ message: '/verifyToken is not yet implemented.' });
 });
 
 /* GET users. */

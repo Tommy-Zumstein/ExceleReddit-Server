@@ -29,6 +29,7 @@ var App = /** @class */ (function () {
         var router = express.Router();
         router.get('/', UserRouter);
         this.express.use(UserRouter);
+        this.express.use('/', express.static(__dirname + '/angularSrc'));
     };
     App.prototype.initializeFirebase = function () {
         firebaseSDK.initializeApp(firebase.firebaseConfig);
