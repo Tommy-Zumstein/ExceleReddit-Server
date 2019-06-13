@@ -48,7 +48,7 @@ router.get('/login', (req, res, next) => {
 
 /* verify users token to login */
 router.get('/verifyToken', (req, res, next) => {
-  const { token } = req.query;
+  // const { token } = req.query;
 
   // TODO: finish this 
   // firebaseSDK.auth().signInWithCustomToken(token)
