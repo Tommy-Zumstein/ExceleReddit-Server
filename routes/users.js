@@ -117,6 +117,7 @@ router.post('/createUser', (req, res, next) => {
       mongooseUser.save(err => {
         if (err) return res.status(400).json(err);
 
+        // TODO: abstract this out to prevent DRY
         firebaseSDK.auth().signInWithEmailAndPassword(user.email, password)
           .then(result => {
             const { uid, refreshToken } = result.user;
