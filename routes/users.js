@@ -107,7 +107,7 @@ router.post('/createUser', (req, res, next) => {
 
   firebaseSDK.auth().createUserWithEmailAndPassword(user.email, password)
     .then(result => {
-      const { uid, refreshToken } = result.user;
+      const { uid } = result.user;
       const userId = uid;
 
       const mongooseUser = new User({
@@ -117,7 +117,21 @@ router.post('/createUser', (req, res, next) => {
       mongooseUser.save(err => {
         if (err) return res.status(400).json(err);
 
-        res.status(200).json({ userId, refreshToken });
+        firebaseSDK.auth().signInWithEmailAndPassword(user.email, password)
+          .then(result => {
+            const { uid, refreshToken } = result.user;
+
+            User.find({ userId: uid }).exec((err, dbResult) => {
+              if (err) res.status(400).json(err);
+
+              const user = dbResult[0];
+
+              res.status(200).json({ user, refreshToken });
+            });
+          })
+          .catch(err => {
+            res.status(400).json(err);
+          });
       });
     })
     .catch(err => res.status(400).json(err));
